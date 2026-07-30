@@ -33,7 +33,7 @@ database/
 
 ```bat
 conda activate yolov8
-cd /d "项目解压目录"
+cd  "项目解压目录"
 python check_environment.py
 python prepare_dataset.py --config config\project.yaml
 python train.py --config config\project.yaml
