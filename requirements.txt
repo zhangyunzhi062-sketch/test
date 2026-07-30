@@ -1,0 +1,3 @@
+# PyTorch 由用户按 CUDA 版本单独安装，避免本文件覆盖现有 cu116 版本。
+ultralytics==8.4.112
+PyYAML>=6.0,<7.0
