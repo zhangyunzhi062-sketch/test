@@ -1,16 +1,16 @@
 # YOLOv8 无人机航拍树木与石头检测
 
-这是一个面向初学者的 Python 项目，用三个现有 YOLO 数据集训练自己的 YOLOv8 模型，并检测航拍图片中的：
+这是一个面向无人机机器学习与图像识别初学者的 Python 项目，用三个现有 YOLO 数据集训练自己的 YOLOv8 模型，并检测航拍图片中的：
 
 - `tree`：树木、树冠和树干
 - `stone`：石头、岩块
 
-当前数据没有可靠的 `forest` 标注，所以第一版不会把“森林”虚构为第三类。项目目前专注于静态图片，后续可以复用模型接入无人机摄像头或 RTSP 视频流。
+项目目前专注于静态图片，后续可以复用模型接入无人机摄像头或 RTSP 视频流。
 
 ## 主要程序
 
 - `check_environment.py`：检查 Conda、Python、PyTorch、Ultralytics 和 GPU。
-- `prepare_dataset.py`：合并并统一三个数据集，不修改原始文件。
+- `prepare_dataset.py`：合并并统一数据集。
 - `train.py`：使用 `yolov8n.pt` 迁移学习。
 - `predict_image.py`：检测一张图片或一个图片目录，保存标注图片和 JSON/CSV 结果。
 
@@ -38,4 +38,4 @@ python predict_image.py --model "D:\zyzcodex\codex-yolov8\runs\detect\uav_tree_s
 - 第一次训练前必须先运行数据准备程序。
 - 本项目不会自动修改原始数据集。
 - 训练与预测代码以 Python 3.8、PyTorch 1.13.1+cu116、Ultralytics 8.4.112 为基准。
-- 原始数据集来自 Roboflow，均在各自的 `data.yaml` 中标明 CC BY 4.0 来源。
+- 原始数据集来自开源网站 Roboflow，均在各自的 `data.yaml` 中标明 CC BY 4.0 来源。
