@@ -10,7 +10,6 @@ from typing import Any, Dict, List, Tuple
 
 EXPECTED_PYTHON = (3, 8)
 EXPECTED_TORCH_PREFIX = "1.13.1+cu116"
-EXPECTED_ULTRALYTICS = "8.4.112"
 
 
 def configure_ultralytics_dir(project_root: Path) -> Path:
@@ -48,12 +47,6 @@ def inspect_environment(run_cuda_test: bool = True) -> Tuple[Dict[str, Any], Lis
 
     try:
         information["ultralytics"] = importlib.metadata.version("ultralytics")
-        if information["ultralytics"] != EXPECTED_ULTRALYTICS:
-            warnings.append(
-                "计划使用 Ultralytics {}，当前为 {}。".format(
-                    EXPECTED_ULTRALYTICS, information["ultralytics"]
-                )
-            )
     except importlib.metadata.PackageNotFoundError:
         errors.append("未安装 ultralytics。")
 

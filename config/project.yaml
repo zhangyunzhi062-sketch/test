@@ -1,23 +1,23 @@
 project:
   name: uav_tree_stone
-  prepared_dataset: "F:/uav-program/训练数据集/uav-tree-stone.v1.yolov8"
+  prepared_dataset: generated/uav-tree-stone.v1.yolov8
   classes:
     - tree
     - stone
 
 datasets:
   - id: nature
-    root: "F:/uav-program/训练数据集/Nature objects.v1i.yolov8"
+    root: "database/Nature objects.v1i.yolov8"
     class_map:
       1: 1  # rock -> stone
       2: 0  # tree -> tree
       3: 0  # trunk -> tree
   - id: stone
-    root: "F:/uav-program/训练数据集/open-pit-rock-chunks-test.v3i.yolov8"
+    root: "database/open-pit-rock-chunks-test.v3i.yolov8"
     class_map:
       0: 1  # stone -> stone
   - id: tree_top
-    root: "F:/uav-program/训练数据集/Tree-Top-View.v1i.yolov8"
+    root: "database/Tree-Top-View.v1i.yolov8"
     class_map:
       0: 0  # tree-top -> tree
 

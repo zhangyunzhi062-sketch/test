@@ -23,6 +23,7 @@ env/
 # Datasets and generated manifests
 data/
 datasets/
+generated/
 *.cache
 
 # Training and prediction outputs

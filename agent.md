@@ -19,12 +19,12 @@
 5. 使用训练后的权重检测指定图片或图片目录，输出可视化图片和结构化结果。
 6. 后续补充森林标注；实时功能复用预测层接入摄像头编号或网络流地址。
 
-# 固定环境与原则
+# 环境与原则
 
 - Conda 环境：`yolov8`
 - Python：3.8
 - PyTorch：1.13.1+cu116
-- Ultralytics：8.4.112，源码位于 `C:\Users\ASUS\Desktop\ultralytics-main`
-- GPU：NVIDIA GeForce RTX 4060 Laptop GPU
-- 原始数据只读；派生数据默认写入 `F:\uav-program\训练数据集\uav-tree-stone.v1.yolov8`
+- Ultralytics：从官方 GitHub 下载源码并使用 `pip install -e .` 安装
+- GPU：支持 CUDA 的 NVIDIA GTX 10 系或更新型号
+- 原始数据随项目保存在 `database`；派生数据默认写入 `generated/uav-tree-stone.v1.yolov8`
 - Windows 训练入口必须放在 `if __name__ == "__main__":` 中
