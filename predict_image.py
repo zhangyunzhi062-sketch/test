@@ -17,7 +17,11 @@ from uav_yolo.runtime import (
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="检测指定图片或图片目录。")
-    parser.add_argument("--model", type=Path, required=True, help="训练得到的 best.pt。")
+    parser.add_argument(
+        "--model",
+        type=Path,
+        help="训练得到的 best.pt；不填写时使用项目原始训练目录中的默认模型。",
+    )
     parser.add_argument(
         "--source",
         type=Path,
@@ -135,7 +139,11 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         configure_ultralytics_dir(config["_project_root"])
         prediction = dict(config["prediction"])
 
-        model_path = args.model.expanduser().resolve()
+        model_path = (
+            args.model.expanduser().resolve()
+            if args.model
+            else resolve_project_path(config, prediction["model"])
+        )
         source = (
             args.source.expanduser().resolve()
             if args.source

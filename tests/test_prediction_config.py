@@ -12,8 +12,9 @@ from uav_yolo.runtime import open_result_directory
 
 
 class PredictionDefaultsTests(unittest.TestCase):
-    def test_source_is_optional_and_no_open_defaults_false(self):
-        args = build_parser().parse_args(["--model", "best.pt"])
+    def test_model_and_source_are_optional(self):
+        args = build_parser().parse_args([])
+        self.assertIsNone(args.model)
         self.assertIsNone(args.source)
         self.assertFalse(args.no_open)
 
@@ -21,8 +22,18 @@ class PredictionDefaultsTests(unittest.TestCase):
         config_path = Path(__file__).resolve().parents[1] / "config" / "project.yaml"
         config = load_project_config(config_path)
         source = resolve_project_path(config, config["prediction"]["source"])
+        model = resolve_project_path(config, config["prediction"]["model"])
         self.assertEqual(source.name, "待检测图片")
         self.assertEqual(source.parent, config["_project_root"])
+        self.assertEqual(
+            model,
+            config["_project_root"]
+            / "runs"
+            / "detect"
+            / "uav_tree_stone"
+            / "weights"
+            / "best.pt",
+        )
         self.assertTrue(config["prediction"]["open_result"])
 
 
