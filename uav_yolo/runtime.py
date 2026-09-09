@@ -3,6 +3,7 @@
 import importlib.metadata
 import os
 import platform
+import subprocess
 import sys
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
@@ -105,3 +106,21 @@ def next_available_directory(base: Path) -> Path:
         if not candidate.exists():
             return candidate
         index += 1
+
+
+def open_result_directory(directory: Path) -> Tuple[bool, str]:
+    """用系统文件管理器打开结果目录；失败时返回原因，不中断预测。"""
+    target = Path(directory).resolve()
+    if not target.is_dir():
+        return False, "目录不存在：{}".format(target)
+
+    try:
+        if os.name == "nt":
+            os.startfile(str(target))  # type: ignore[attr-defined]
+        elif sys.platform == "darwin":
+            subprocess.Popen(["open", str(target)])
+        else:
+            subprocess.Popen(["xdg-open", str(target)])
+    except (OSError, RuntimeError) as exc:
+        return False, str(exc)
+    return True, ""

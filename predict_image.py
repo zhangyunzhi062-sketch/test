@@ -8,13 +8,21 @@ from typing import Any, Dict, Iterable, List, Optional, Sequence
 
 from uav_yolo.config import ConfigError, load_project_config, resolve_project_path
 from uav_yolo.dataset import IMAGE_EXTENSIONS
-from uav_yolo.runtime import configure_ultralytics_dir, next_available_directory
+from uav_yolo.runtime import (
+    configure_ultralytics_dir,
+    next_available_directory,
+    open_result_directory,
+)
 
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="检测指定图片或图片目录。")
     parser.add_argument("--model", type=Path, required=True, help="训练得到的 best.pt。")
-    parser.add_argument("--source", type=Path, required=True, help="图片文件或图片目录。")
+    parser.add_argument(
+        "--source",
+        type=Path,
+        help="图片文件或图片目录；不填写时检测项目根目录的“待检测图片”。",
+    )
     parser.add_argument(
         "--config",
         type=Path,
@@ -26,6 +34,11 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--iou", type=float, help="NMS IoU 阈值，0 到 1。")
     parser.add_argument("--imgsz", type=int, help="推理图片尺寸。")
     parser.add_argument("--device", help="设备，如 0 或 cpu。")
+    parser.add_argument(
+        "--no-open",
+        action="store_true",
+        help="检测完成后不自动打开结果目录，适合远程或无桌面环境。",
+    )
     return parser
 
 
@@ -123,7 +136,11 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         prediction = dict(config["prediction"])
 
         model_path = args.model.expanduser().resolve()
-        source = args.source.expanduser().resolve()
+        source = (
+            args.source.expanduser().resolve()
+            if args.source
+            else resolve_project_path(config, prediction["source"])
+        )
         if not model_path.is_file():
             raise FileNotFoundError("找不到模型权重：{}".format(model_path))
         _validate_source(source)
@@ -160,6 +177,10 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         _write_results(output_dir, rows)
         print("识别完成：{}".format(output_dir))
         print("共保存 {} 条检测记录。".format(len(rows)))
+        if bool(prediction.get("open_result", True)) and not args.no_open:
+            opened, message = open_result_directory(output_dir)
+            if not opened:
+                print("[提示] 无法自动打开结果目录：{}".format(message))
         return 0
     except (ConfigError, FileNotFoundError, RuntimeError, ValueError, KeyError) as exc:
         print("[预测未启动或已停止] {}".format(exc))

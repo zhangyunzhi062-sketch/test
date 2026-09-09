@@ -34,8 +34,10 @@ training:
   name: uav_tree_stone
 
 prediction:
+  source: "待检测图片"
   conf: 0.25
   iou: 0.70
   imgsz: 640
   device: "0"
   output: outputs/predict
+  open_result: true

@@ -1,4 +1,6 @@
-# YOLOv8 无人机航拍木石检测
+# Winter.Z 的图像识别 ver1.1
+
+当前代码为 **1.1.0A 显卡友好版**：使用 YOLOv8 完成无人机航拍树木与石头检测。
 
 这是一个面向初学者的无人机机器学习和图像识别 Python 项目，用随仓库提供的三个 YOLO 数据集训练自定义 YOLOv8 模型，并检测航拍图片中的：
 
@@ -20,12 +22,14 @@ database/
 
 使用者从 GitHub 下载项目 ZIP 并解压后，不需要另外下载或修改数据集路径，只需按照[中文使用手册](使用手册.md)配置环境，然后运行数据准备、训练和预测命令。
 
+项目根目录还包含“待检测图片”文件夹。把图片放进去后，预测命令可以省略 `--source`；识别完成后，程序会自动打开本次结果文件夹。
+
 ## 主要程序
 
 - `check_environment.py`：检查 Conda、Python、PyTorch、Ultralytics 和 CUDA。
 - `prepare_dataset.py`：合并并统一 `database` 中的三套数据，不修改原始文件。
-- `train.py`：使用 `yolov8n.pt` 迁移学习。
-- `predict_image.py`：检测一张图片或一个图片目录，保存标注图片和 JSON/CSV 结果。
+- `train.py`：保持 1.0.0A 的 `yolov8n.pt`、100 轮等默认训练设置。
+- `predict_image.py`：默认检测“待检测图片”文件夹，保存标注图片和 JSON/CSV，并自动打开结果目录。
 
 ## 最短使用流程
 
@@ -39,18 +43,19 @@ python prepare_dataset.py --config config\project.yaml
 python train.py --config config\project.yaml
 ```
 
-训练完成后，把图片路径换成自己的实际文件：
+训练完成后，把图片放进项目根目录的“待检测图片”，然后运行：
 
 ```bat
-python predict_image.py --model "runs\detect\uav_tree_stone\weights\best.pt" --source "%USERPROFILE%\Pictures\example.jpg"
+python predict_image.py --model "runs\detect\uav_tree_stone\weights\best.pt"
 ```
 
-如果训练输出目录带有数字后缀，请使用命令行实际显示目录中的 `best.pt`。
+如果训练输出目录带有数字后缀，请使用命令行实际显示目录中的 `best.pt`。仍可通过 `--source` 临时指定其他图片或文件夹。
 
 ## 重要说明
 
 - 原始数据保存在 `database`，数据准备结果保存在被 Git 忽略的 `generated`。
-- `generated`、`runs`、`outputs` 和模型权重不会提交到 GitHub。
+- `generated`、`runs`、`outputs` 和用户训练生成的模型权重不会提交到 GitHub。
+- 1.1.0A Release 完整包附带官方 `yolov8n.pt` 初始训练权重，不含用户训练结果。
 - 第一版类别固定为 `tree` 和 `stone`。
 - 基准环境为 Windows、Python 3.8、PyTorch 1.13.1+cu116；使用支持 CUDA 的 NVIDIA GTX 10 系或更新显卡。
 - Ultralytics 从官方 GitHub 源码安装，项目不限定某个具体显卡型号。

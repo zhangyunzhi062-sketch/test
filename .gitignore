@@ -30,6 +30,7 @@ generated/
 runs/
 outputs/
 results/
+release-dist/
 
 # Model weights and exported engines
 *.pt
