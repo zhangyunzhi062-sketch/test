@@ -41,6 +41,7 @@ training:
   cache: ram
 
 prediction:
+  model: runs/detect/uav_tree_stone/weights/best.pt
   source: "待检测图片"
   conf: 0.25
   iou: 0.70

@@ -31,14 +31,14 @@ database/
 
 使用者从 GitHub 下载项目 ZIP 并解压后，不需要另外下载或修改数据集路径，只需按照[中文使用手册](使用手册.md)配置环境，然后运行数据准备、训练和预测命令。
 
-项目根目录还包含“待检测图片”文件夹。把图片放进去后，预测命令可以省略 `--source`；识别完成后，程序会自动打开本次结果文件夹。
+项目根目录还包含“待检测图片”文件夹。把图片放进去后，预测命令可以同时省略 `--source` 和 `--model`：两版默认模型都是 `runs\detect\uav_tree_stone\weights\best.pt`；识别完成后，程序会自动打开本次结果文件夹。
 
 ## 主要程序
 
 - `check_environment.py`：检查 Conda、Python、PyTorch、Ultralytics 和 CUDA。
 - `prepare_dataset.py`：合并并统一 `database` 中的三套数据，不修改原始文件。
 - `train.py`：当前 1.1.0B 默认使用 `yolov8x.pt`、1000 轮与严格提前收敛设置。
-- `predict_image.py`：默认检测“待检测图片”文件夹，保存标注图片和 JSON/CSV，并自动打开结果目录。
+- `predict_image.py`：默认使用原始训练目录的 `best.pt` 检测“待检测图片”，保存结果并自动打开结果目录。
 
 ## 最短使用流程
 
@@ -55,10 +55,10 @@ python train.py --config config\project.yaml
 训练完成后，把图片放进项目根目录的“待检测图片”，然后运行：
 
 ```bat
-python predict_image.py --model "runs\detect\uav_tree_stone_yolov8x_accurate\weights\best.pt"
+python predict_image.py
 ```
 
-如果训练输出目录带有数字后缀，请使用命令行实际显示目录中的 `best.pt`。仍可通过 `--source` 临时指定其他图片或文件夹。
+默认读取 `runs\detect\uav_tree_stone\weights\best.pt`。如果模型在其他目录，用 `--model` 指定；仍可通过 `--source` 临时指定其他图片或文件夹。
 
 ## 重要说明
 
