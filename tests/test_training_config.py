@@ -5,7 +5,8 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from train import build_training_arguments
+from train import build_parser, build_training_arguments
+from uav_yolo.config import load_project_config
 
 
 class TrainingArgumentsTests(unittest.TestCase):
@@ -42,6 +43,23 @@ class TrainingArgumentsTests(unittest.TestCase):
             self.assertEqual(result["device"], "cpu")
             self.assertEqual(result["data"], str(root / "prepared" / "data.yaml"))
             self.assertTrue(result["val"])
+
+    def test_110b_accuracy_profile_defaults(self):
+        root = Path(__file__).resolve().parents[1]
+        config = load_project_config(root / "config" / "project.yaml")
+        args = build_parser().parse_args([])
+        result = build_training_arguments(config, args)
+
+        self.assertEqual(result["model"], "yolov8x.pt")
+        self.assertEqual(result["epochs"], 1000)
+        self.assertEqual(result["imgsz"], 832)
+        self.assertEqual(result["batch"], -1)
+        self.assertEqual(result["workers"], 48)
+        self.assertEqual(result["patience"], 200)
+        self.assertEqual(result["optimizer"], "AdamW")
+        self.assertTrue(result["cos_lr"])
+        self.assertEqual(result["multi_scale"], 0.25)
+        self.assertEqual(result["cache"], "ram")
 
 
 if __name__ == "__main__":
