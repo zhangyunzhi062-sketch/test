@@ -6,10 +6,9 @@
 
 | Release | 定位 | 默认训练方案 |
 | --- | --- | --- |
-| **1.1.0A 显卡友好版（Latest）** | 普通支持 CUDA 的个人电脑 | 保持 1.0.0A：`yolov8n.pt`、100 epochs、640、batch 8、workers 0、patience 30 |
-| **1.1.0B 威力加强版** | 配有 NVIDIA CUDA GPU 的 60 核计算节点 | `yolov8x.pt`、1000 epochs、832、自动 batch、workers 48、patience 200 |
+| **1.1.0A 显卡友好版（Latest）** | 推荐个人电脑 | 保持 1.0.0A：`yolov8n.pt`、100 epochs、640、batch 8、workers 0、patience 30 |
+| **1.1.0B 威力加强版** | 推荐超算工作台 | `yolov8x.pt`、1000 epochs、832、自动 batch、workers 48、patience 200 |
 
-两版都具有“待检测图片”默认目录和检测完成后自动打开结果目录的功能。60 个 CPU 核心主要用于并行加载数据；大模型训练速度和可用 batch 仍主要取决于 GPU 与显存。
 
 这是一个面向初学者的无人机机器学习和图像识别 Python 项目，用随仓库提供的三个 YOLO 数据集训练自定义 YOLOv8 模型，并检测航拍图片中的：
 
